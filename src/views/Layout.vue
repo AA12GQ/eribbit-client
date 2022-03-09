@@ -1,5 +1,6 @@
 <template>
   <AppTopnav/>
+  <AppHeader/>
   <nav>公共顶栏</nav>
   <header>公共头部</header>
   <main>
@@ -11,9 +12,10 @@
 
 <script>
 import AppTopnav from '@/components/app-topnav.vue'
+import AppHeader from '@/components/app-header.vue'
 export default {
   name: 'xtx-layout',
-  components: { AppTopnav }
+  components: { AppTopnav, AppHeader }
 }
 </script>
 
