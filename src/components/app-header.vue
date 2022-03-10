@@ -1,8 +1,8 @@
 <template>
-  <header class="app-header">
+  <header class='app-header'>
     <div class="container">
       <h1 class="logo"><RouterLink to="/">小兔鲜</RouterLink></h1>
-      <AppHeaderNav />
+     <AppHeaderNav />
       <div class="search">
         <i class="iconfont icon-search"></i>
         <input type="text" placeholder="搜一搜">
@@ -17,14 +17,14 @@
 </template>
 
 <script>
-import AppHeaderNav from './app-header-nav.vue'
+import AppHeaderNav from './app-header-nav'
 export default {
   name: 'AppHeader',
   components: { AppHeaderNav }
 }
 </script>
 
-<style scoped lang="less">
+<style scoped lang='less'>
 .app-header {
   background: #fff;
   .container {
@@ -38,9 +38,10 @@ export default {
       height: 132px;
       width: 100%;
       text-indent: -9999px;
-      background: url(~@/assets/images/logo.png) no-repeat center 18px / contain;
+      background: url(../assets/images/logo.png) no-repeat center 18px / contain;
     }
   }
+
   .search {
     width: 170px;
     height: 32px;
