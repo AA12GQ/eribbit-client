@@ -1,7 +1,7 @@
 <template>
   <AppTopnav/>
   <AppHeader/>
-  <main>
+  <main class="app-body">
     <!-- 二级路由 -->
     <RouterView></RouterView>
   </main>
