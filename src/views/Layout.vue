@@ -1,21 +1,27 @@
 <template>
-  <AppTopnav/>
-  <AppHeader/>
+  <!-- 1. 顶部通栏布局 -->
+  <AppTopnav />
+  <!-- 2.1 普通头部布局-->
+  <AppHeader />
+  <!-- 2.2 固定头部布局-->
+  <AppHeaderSticky />
   <main class="app-body">
     <!-- 二级路由 -->
     <RouterView></RouterView>
   </main>
-  <AppFooter/>
+  <!-- 3. 底部布局 -->
+  <AppFooter />
 </template>
 
 <script>
 import AppTopnav from '@/components/app-topnav.vue'
 import AppHeader from '@/components/app-header.vue'
 import AppFooter from '@/components/app-footer.vue'
+import AppHeaderSticky from '@/components/app-header-sticky.vue'
 import { useStore } from 'vuex'
 export default {
   name: 'xtx-layout',
-  components: { AppTopnav, AppHeader, AppFooter },
+  components: { AppTopnav, AppHeader, AppFooter, AppHeaderSticky },
   setup () {
     const store = useStore()
     store.dispatch('category/getList')
