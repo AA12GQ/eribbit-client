@@ -1,11 +1,11 @@
 <template>
-  <div class="app-header-sticky" :class="{show: isShow}">
-    <div class="container"  v-show="isShow">
+  <div class="app-header-sticky" :class="{show:y>=78}">
+    <div class="container" v-show="y>=78">
       <RouterLink class="logo" to="/" />
       <AppHeaderNav />
-      <div class="right">
-        <RouterLink to="/" >品牌</RouterLink>
-        <RouterLink to="/" >专题</RouterLink>
+      <div class="left">
+        <RouterLink to="/">品牌</RouterLink>
+        <RouterLink to="/">专题</RouterLink>
       </div>
     </div>
   </div>
@@ -13,6 +13,7 @@
 
 <script>
 import AppHeaderNav from './app-header-nav.vue'
+import { useWindowScroll } from '@vueuse/core'
 import { ref } from 'vue'
 export default {
   name: 'AppHeaderSticky',
@@ -27,7 +28,8 @@ export default {
         isShow.value = false
       }
     }
-    return { isShow }
+    const { y } = useWindowScroll()
+    return { isShow, y }
   }
 }
 </script>
