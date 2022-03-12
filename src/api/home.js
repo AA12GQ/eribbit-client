@@ -11,3 +11,7 @@ export const findBanner = (distributionSite = 1) => {
 export const findNew = (limit = 4) => {
   return request('/home/new', 'get', { limit: limit })
 }
+
+export const findHot = () => {
+  return request('/home/hot', 'get')
+}
