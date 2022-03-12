@@ -3,9 +3,10 @@
     <HomePanel title="新鲜好物" sub-title="新鲜出炉 品质靠谱">
       <!-- 具名插槽 -->
       <template #right><XtxMore path="/"/></template>
+      <Transition name="fade">
       <!-- 默认插槽 - 面板内容 -->
-      <ul class="goods-list">
-        <li v-for="item in list" :key="item.id">
+      <ul v-if="goods.length" ref="pannel" class="goods-list">
+        <li v-for="item in goods" :key="item.id">
           <RouterLink to="/">
             <img :src="item.picture" alt="" />
             <p class="name ellipsis">{{ item.name }}</p>
@@ -13,6 +14,8 @@
           </RouterLink>
         </li>
       </ul>
+      <HomeSkeleton v-else/>
+      </Transition>
     </HomePanel>
   </div>
 </template>
@@ -20,15 +23,16 @@
 import HomePanel from './home-panel.vue'
 import { ref } from 'vue'
 import { findNew } from '@/api/home'
+import HomeSkeleton from './home-skeleton'
 export default {
-  components: { HomePanel },
+  components: { HomePanel, HomeSkeleton },
   name: 'HomeNew',
   setup () {
-    const list = ref([])
+    const goods = ref([])
     findNew().then(({ result }) => {
-      list.value = result
+      goods.value = result
     })
-    return { list }
+    return { goods }
   }
 
 }
