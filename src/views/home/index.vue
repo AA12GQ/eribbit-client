@@ -4,18 +4,22 @@
       <div class="container">
         <!-- 左侧分类 -->
         <HomeCategory />
+        <!-- 轮播图 -->
         <HomeBanner/>
       </div>
     </div>
+    <!-- 新鲜好物 -->
+    <HomeNew/>
   </div>
 </template>
 
 <script>
-import HomeCategory from './components/home-category.vue'
-import HomeBanner from './components/home-banner.vue'
+import HomeCategory from './components/home-category'
+import HomeBanner from './components/home-banner'
+import HomeNew from './components/home-new'
 export default {
   name: 'PageHome',
-  components: { HomeCategory, HomeBanner }
+  components: { HomeCategory, HomeBanner, HomeNew }
 }
 </script>
 

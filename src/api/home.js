@@ -7,3 +7,7 @@ export const findBrand = (limit = 6) => {
 export const findBanner = (distributionSite = 1) => {
   return request('/home/banner', 'get', { distributionSite: distributionSite })
 }
+
+export const findNew = (limit = 4) => {
+  return request('/home/new', 'get', { limit: limit })
+}
