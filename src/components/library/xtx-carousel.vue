@@ -1,5 +1,5 @@
 <template>
-  <div class="xtx-carousel">
+  <div class="xtx-carousel" @mouseenter="stop()" @mouseleave="start()">
     <ul class="carousel-body">
       <li class="carousel-item" v-for="(item,i) in sliders" :key="i" :class="{fade:index===i}">
         <RouterLink :to="item.hrefUrl">
@@ -7,31 +7,72 @@
         </RouterLink>
       </li>
     </ul>
-    <a href="javascript:;" class="carousel-btn prev">
+    <a href="javascript:;" class="carousel-btn prev" @click="toggle(-1)">
       <i class="iconfont icon-angle-left"></i>
     </a>
-    <a href="javascript:;" class="carousel-btn next">
+    <a href="javascript:;" class="carousel-btn next" @click="toggle(1)">
       <i class="iconfont icon-angle-right"></i>
     </a>
     <div class="carousel-indicator">
-      <span v-for="(item,i) in sliders" :key="i" :class="{active:index===i}"></span>
+      <span v-for="(item,i) in sliders" :key="i" :class="{active:index===i}" @click="index = i"></span>
     </div>
   </div>
 </template>
 
 <script>
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 export default {
   name: 'XtxCarousel',
   props: {
     sliders: {
       type: Array,
       default: () => []
+    },
+    duration: {
+      type: Number,
+      default: 3000
+    },
+    autoPlay: {
+      type: Boolean,
+      default: false
     }
   },
-  setup () {
+  setup (props) {
     const index = ref(0)
-    return { index }
+    // 自动播放
+    let timer = null
+    const autoPlayFn = () => {
+      clearInterval(timer)
+      timer = setInterval(() => {
+        toggle(1)
+      }, props.duration)
+    }
+    watch(() => props.sliders, (newVal) => {
+      // 超过一条数据 并且 开启自动播放，才调用自动播放函数
+      if (newVal.length > 1 && props.autoPlay) {
+        autoPlayFn()
+      }
+    }, { immediate: true })
+    const stop = () => {
+      if (timer) clearInterval(timer)
+    }
+    const start = () => {
+      if (props.sliders.length && props.autoPlay) {
+        autoPlayFn()
+      }
+    }
+    // 上一张和下一张
+    const toggle = (step) => {
+      const temp = index.value + step
+      if (temp < 0) {
+        index.value = props.sliders.length - 1
+      } else if (temp > props.sliders.length - 1) {
+        index.value = 0
+      } else {
+        index.value = temp
+      }
+    }
+    return { index, toggle, stop, start }
   }
 }
 </script>
