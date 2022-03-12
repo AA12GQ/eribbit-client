@@ -1,12 +1,12 @@
 <template>
   <div class="home-new">
-    <HomePanel title="新鲜好物" sub-title="新鲜出炉 品质靠谱">
+    <HomePanel ref="target" title="新鲜好物" sub-title="新鲜出炉 品质靠谱">
       <!-- 具名插槽 -->
       <template #right><XtxMore path="/"/></template>
       <Transition name="fade">
       <!-- 默认插槽 - 面板内容 -->
-      <ul v-if="goods.length" ref="pannel" class="goods-list">
-        <li v-for="item in goods" :key="item.id">
+      <ul v-if="list.length" ref="pannel" class="goods-list">
+        <li v-for="item in list" :key="item.id">
           <RouterLink to="/">
             <img :src="item.picture" alt="" />
             <p class="name ellipsis">{{ item.name }}</p>
@@ -21,18 +21,15 @@
 </template>
 <script>
 import HomePanel from './home-panel.vue'
-import { ref } from 'vue'
 import { findNew } from '@/api/home'
 import HomeSkeleton from './home-skeleton'
+import { useLazyData } from '@/hooks'
 export default {
   components: { HomePanel, HomeSkeleton },
   name: 'HomeNew',
   setup () {
-    const goods = ref([])
-    findNew().then(({ result }) => {
-      goods.value = result
-    })
-    return { goods }
+    const { target, list } = useLazyData(findNew)
+    return { target, list }
   }
 
 }
