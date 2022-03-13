@@ -7,14 +7,17 @@ export const useLazyData = (apiFn) => {
 
   const { stop } = useIntersectionObserver(
     target,
-    ([{ isIntersecting }]) => {
+    ([{ isIntersecting }], observerElement) => {
       if (isIntersecting) {
-        console.log('元素可见')
-        apiFn().then(({ result }) => {
-          list.value = result
-        })
+        console.log('进入可视区')
         stop()
+        apiFn().then(data => {
+          list.value = data.result
+        })
       }
+    },
+    {
+      threshold: 0
     }
   )
   return { list, target }

@@ -15,3 +15,7 @@ export const findNew = (limit = 4) => {
 export const findHot = () => {
   return request('/home/hot', 'get')
 }
+
+export const findGoods = () => {
+  return request('/home/goods', 'get')
+}
