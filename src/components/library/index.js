@@ -6,6 +6,9 @@ import { useIntersectionObserver } from '@vueuse/core'
 import XtxBread from './xtx-bread.vue'
 import XtxBreadItem from './xtx-bread-item.vue'
 
+const importFn = require.context('./', false, /\.vue$/)
+console.dir(importFn.keys())
+
 const defineDirective = (app) => {
   app.directive('lazy', {
     mounted (el, { value }) {
@@ -38,5 +41,10 @@ export default {
     app.component(XtxBread.name, XtxBread)
     app.component(XtxBreadItem.name, XtxBreadItem)
     defineDirective(app)
+
+    importFn.keys.forEach(key => {
+      const component = importFn(key).default
+      app.component(component.name, component)
+    })
   }
 }
