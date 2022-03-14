@@ -1,73 +1,92 @@
 <template>
-  <div class='sub-sort'>
+  <div class="sub-sort">
     <div class="sort">
       <a
-        :class="{ active: reqParams.sortField === undefined }"
-        @click="changeSort()"
+        :class="{ active: sortParams.sortField === null }"
+        @click="changeSort(null)"
         href="javascript:;"
+        >默认排序</a
       >
-        默认排序
-      </a>
       <a
-        :class="{ active: reqParams.sortField === 'publishTime' }"
+        :class="{ active: sortParams.sortField === 'publishTime' }"
+        href="javascript:;"
         @click="changeSort('publishTime')"
-        href="javascript:;"
+        >最新商品</a
       >
-        最新商品
-      </a>
       <a
-        :class="{ active: reqParams.sortField === 'orderNum' }"
+        :class="{ active: sortParams.sortField === 'orderNum' }"
+        href="javascript:;"
         @click="changeSort('orderNum')"
-        href="javascript:;"
+        >最高人气</a
       >
-        最高人气
-      </a>
       <a
-        :class="{ active: reqParams.sortField === 'evaluateNum' }"
-        @click="changeSort('evaluateNum')"
+        :class="{ active: sortParams.sortField === 'evaluateNum' }"
         href="javascript:;"
+        @click="changeSort('evaluateNum')"
+        >评论最多</a
       >
-        评论最多
-      </a>
       <a href="javascript:;" @click="changeSort('price')">
         价格排序
         <i
-          :class="{ active: reqParams.sortMethod === 'asc' }"
           class="arrow up"
+          :class="{ active: sortParams.sortField === 'price' && sortParams.sortMethod === 'asc' }"
         />
         <i
-          :class="{ active: reqParams.sortMethod === 'desc' }"
+          :class="{ active: sortParams.sortField === 'price' && sortParams.sortMethod === 'desc' }"
           class="arrow down"
         />
       </a>
     </div>
     <div class="check">
-      <XtxCheckbox v-model="reqParams.inventory">仅显示有货商品</XtxCheckbox>
-      <XtxCheckbox v-model="reqParams.onlyDiscount">仅显示特惠商品</XtxCheckbox>
+      <XtxCheckbox @change="changeCheck" v-model="sortParams.inventory">仅显示有货商品</XtxCheckbox>
+      <XtxCheckbox @change="changeCheck" v-model="sortParams.onlyDiscount"
+        >仅显示特惠商品</XtxCheckbox
+      >
     </div>
   </div>
 </template>
-
 <script>
-import { inject } from 'vue'
+import { reactive } from 'vue-demi'
 export default {
   name: 'SubSort',
-  setup () {
-    const reqParams = inject('reqParams')
-    const changeSort = (sortField) => {
-      reqParams.sortField = sortField
+  setup (props, { emit }) {
+    // 实现交互(实现 交互的数据与后台保持一致)
+    // 1.确定交互数据
+    const sortParams = reactive({
+      inventory: false,
+      onlyDiscount: false,
+      sortField: null, // publishTime,orderNum,price,evaluateNum
+      sortMethod: null // asc为正序，desc为倒序，默认为desc
+    })
+    // 2.提供给模板使用
+    // 3.绑定按钮点击事件  修改排序字段和排序方式
+    const changeSort = sortField => {
       if (sortField === 'price') {
-        reqParams.sortMethod = reqParams.sortMethod === 'asc' ? 'desc' : 'asc'
+        sortParams.sortField = sortField
+        // 处理排序
+        if (sortParams.sortMethod === null) {
+          sortParams.sortMethod = 'desc'
+        } else {
+          sortParams.sortMethod = sortParams.sortMethod === 'desc' ? 'asc' : 'desc'
+        }
       } else {
-        reqParams.sortMethod = undefined
+        // 如果已经选中 阻止运行
+        if (sortParams.sortField === sortField) return
+        sortParams.sortField = sortField
+        sortParams.sortMethod = null
       }
+      // 触发 sort-change事件
+      emit('sort-change', sortParams)
     }
-    return { reqParams, changeSort }
+    const changeCheck = () => {
+      // 触发 sort-change事件
+      emit('sort-change', sortParams)
+    }
+    return { sortParams, changeSort, changeCheck }
   }
 }
 </script>
-
-<style scoped lang='less'>
+<style scoped lang="less">
 .sub-sort {
   height: 80px;
   display: flex;
@@ -84,7 +103,7 @@ export default {
       color: #999;
       border-radius: 2px;
       position: relative;
-      transition: all .3s;
+      transition: all 0.3s;
       &.active {
         background: @xtxColor;
         border-color: @xtxColor;
@@ -97,7 +116,7 @@ export default {
         &.up {
           top: 3px;
           border-bottom-color: #bbb;
-            &.active {
+          &.active {
             border-bottom-color: @xtxColor;
           }
         }
