@@ -110,3 +110,19 @@
     opacity: 0;
   }
 }
+.fade-right {
+  &-enter-to,
+  &-leave-from {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  &-enter-active,
+  &-leave-active {
+    transition: all 0.5s;
+  }
+  &-enter-from,
+  &-leave-to {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+}

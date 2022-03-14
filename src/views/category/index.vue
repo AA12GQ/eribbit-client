@@ -61,6 +61,7 @@ export default {
       })
     }
     watch(() => route.params.id, (newVal) => {
+      if (`/category/${newVal}` !== route.path) return
       newVal && getSubList()
     }, { immediate: true })
     const store = useStore()
