@@ -11,3 +11,7 @@ export const findTopCategory = (id) => {
 export const findSubFilter = (id) => {
   return request('/category/sub/filter', 'get', { id: id })
 }
+
+export const findSubCategoryGoods = (params) => {
+  return request('/category/goods/temporary', 'post', params)
+}
