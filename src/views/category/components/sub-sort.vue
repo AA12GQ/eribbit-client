@@ -1,26 +1,69 @@
 <template>
   <div class='sub-sort'>
     <div class="sort">
-      <a href="javascript:;">默认排序</a>
-      <a href="javascript:;">最新商品</a>
-      <a href="javascript:;">最高人气</a>
-      <a href="javascript:;">评论最多</a>
-      <a href="javascript:;">
+      <a
+        :class="{ active: reqParams.sortField === undefined }"
+        @click="changeSort()"
+        href="javascript:;"
+      >
+        默认排序
+      </a>
+      <a
+        :class="{ active: reqParams.sortField === 'publishTime' }"
+        @click="changeSort('publishTime')"
+        href="javascript:;"
+      >
+        最新商品
+      </a>
+      <a
+        :class="{ active: reqParams.sortField === 'orderNum' }"
+        @click="changeSort('orderNum')"
+        href="javascript:;"
+      >
+        最高人气
+      </a>
+      <a
+        :class="{ active: reqParams.sortField === 'evaluateNum' }"
+        @click="changeSort('evaluateNum')"
+        href="javascript:;"
+      >
+        评论最多
+      </a>
+      <a href="javascript:;" @click="changeSort('price')">
         价格排序
-        <i class="arrow up" />
-        <i class="arrow down" />
+        <i
+          :class="{ active: reqParams.sortMethod === 'asc' }"
+          class="arrow up"
+        />
+        <i
+          :class="{ active: reqParams.sortMethod === 'desc' }"
+          class="arrow down"
+        />
       </a>
     </div>
     <div class="check">
-      <XtxCheckbox>仅显示有货商品</XtxCheckbox>
-      <XtxCheckbox>仅显示特惠商品</XtxCheckbox>
+      <XtxCheckbox v-model="reqParams.inventory">仅显示有货商品</XtxCheckbox>
+      <XtxCheckbox v-model="reqParams.onlyDiscount">仅显示特惠商品</XtxCheckbox>
     </div>
   </div>
 </template>
 
 <script>
+import { inject } from 'vue'
 export default {
-  name: 'SubSort'
+  name: 'SubSort',
+  setup () {
+    const reqParams = inject('reqParams')
+    const changeSort = (sortField) => {
+      reqParams.sortField = sortField
+      if (sortField === 'price') {
+        reqParams.sortMethod = reqParams.sortMethod === 'asc' ? 'desc' : 'asc'
+      } else {
+        reqParams.sortMethod = undefined
+      }
+    }
+    return { reqParams, changeSort }
+  }
 }
 </script>
 

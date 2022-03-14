@@ -29,7 +29,7 @@ import GoodsItem from './components/goods-item.vue'
 import { findSubFilter } from '@/api/category'
 import SubFilter from './components/sub-filter'
 import { useRoute } from 'vue-router'
-import { provide, ref, watch } from 'vue'
+import { provide, ref, watch, reactive } from 'vue'
 export default {
   name: 'SubCategory',
   components: { SubBread, SubFilter, SubSort, GoodsItem },
@@ -44,6 +44,14 @@ export default {
       subFilter.value = result
     }, { immediate: true })
     provide('subFilter', subFilter)
+
+    const reqParams = reactive({
+      sortField: undefined,
+      sortMethod: undefined,
+      inventory: false,
+      onlyDiscount: false
+    })
+    provide('reqParams', reqParams)
     return { subFilter }
   }
 }
