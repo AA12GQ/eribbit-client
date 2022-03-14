@@ -6,7 +6,16 @@
       <SubBread />
       <!-- 筛选分区 -->
       <SubFilter />
-      <!-- 商品分区 -->
+       <div class="goods-list">
+        <!-- 排序 -->
+        <SubSort />
+        <!-- 商品列表 -->
+        <ul class="list">
+          <li v-for="i in 20" :key="i">
+            <GoodsItem />
+          </li>
+        </ul>
+      </div>
     </div>
   </div>
   <SubSkeleton v-else></SubSkeleton>
@@ -15,13 +24,15 @@
 
 <script>
 import SubBread from './components/sub-bread'
+import SubSort from './components/sub-sort.vue'
+import GoodsItem from './components/goods-item.vue'
 import { findSubFilter } from '@/api/category'
 import SubFilter from './components/sub-filter'
 import { useRoute } from 'vue-router'
 import { provide, ref, watch } from 'vue'
 export default {
   name: 'SubCategory',
-  components: { SubBread, SubFilter },
+  components: { SubBread, SubFilter, SubSort, GoodsItem },
   setup () {
     const route = useRoute()
     const subFilter = ref(null)
@@ -39,4 +50,21 @@ export default {
 </script>
 
 <style scoped lang="less">
+.goods-list {
+  background: #fff;
+  padding: 0 25px;
+  margin-top: 25px;
+  ul {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 0 5px;
+    li {
+      margin-right: 20px;
+      margin-bottom: 20px;
+      &:nth-child(5n) {
+        margin-right: 0;
+      }
+    }
+  }
+}
 </style>
