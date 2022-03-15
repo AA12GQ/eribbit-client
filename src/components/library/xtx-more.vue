@@ -17,7 +17,7 @@ export default {
 }
 </script>
 
-<style scoped lang="less">
+<style scoped lang='less'>
 .xtx-more {
   margin-bottom: 2px;
   span {

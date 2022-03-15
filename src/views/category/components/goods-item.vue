@@ -1,9 +1,9 @@
 <template>
-  <RouterLink to="/" class="goods-item">
-    <img :src="goods.picture" alt="" />
-    <p class="name ellipsis">{{ goods.name }}</p>
-    <p class="desc ellipsis">{{ goods.desc }}</p>
-    <p class="price">&yen;{{ goods.price }}</p>
+  <RouterLink :to="`/product/${goods.id}`" class='goods-item'>
+    <img :src="goods.picture" alt="">
+    <p class="name ellipsis">{{goods.name}}</p>
+    <p class="desc ellipsis">{{goods.desc}}</p>
+    <p class="price">&yen;{{goods.price}}</p>
   </RouterLink>
 </template>
 
@@ -19,7 +19,7 @@ export default {
 }
 </script>
 
-<style scoped lang="less">
+<style scoped lang='less'>
 .goods-item {
   display: block;
   width: 220px;
