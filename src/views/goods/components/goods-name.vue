@@ -12,7 +12,7 @@
     </dl>
     <dl>
       <dt>配送</dt>
-      <dd>至 </dd>
+      <dd>至 <XtxCity @change="changeCity" :fullLocation="fullLocation" /></dd>
     </dl>
     <dl>
       <dt>服务</dt>
@@ -27,6 +27,7 @@
 </template>
 
 <script>
+import { ref } from 'vue'
 export default {
   name: 'GoodName',
   props: {
@@ -34,6 +35,17 @@ export default {
       type: Array,
       default: () => {}
     }
+  },
+  setup (props) {
+    const fullLocation = ref('广东省 广州市 天河区')
+    // 已经登录情况，显示用户的默认地址
+    if (props.goods.userAddresses) {
+      // fullLocation.value = xxxx
+    }
+    const changeCity = (result) => {
+      fullLocation.value = result.fullLocation
+    }
+    return { fullLocation, changeCity }
   }
 }
 </script>

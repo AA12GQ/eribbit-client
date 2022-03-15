@@ -1,24 +1,30 @@
 <template>
   <div class="xtx-city" ref="target">
     <div class="select" @click="toggle()">
-      <!--<span class="value">广东省 广州市 天河区</span>-->
-      <span class="placeholder">请选择配送地址</span>
+      <span v-if="fullLocation" class="value">{{ fullLocation }}</span>
+      <span v-else class="placeholder">请选择配送地址</span>
       <i class="iconfont icon-angle-down"></i>
     </div>
     <div class="option" v-if="isShow">
       <div v-if="!currList.length" class="loading"></div>
-       <span class="ellipsis" v-for="item in currList" :key="item.code">{{item.name}}</span>
+       <span @click="changeItem(item)" class="ellipsis" v-for="item in currList" :key="item.code">{{item.name}}</span>
     </div>
   </div>
 </template>
 
 <script>
-import { ref, computed } from 'vue'
+import { ref, computed, reactive } from 'vue'
 import { onClickOutside } from '@vueuse/core'
 import axios from 'axios'
 export default {
   name: 'XtxCity',
-  setup () {
+  props: {
+    fullLocation: {
+      type: String,
+      default: ''
+    }
+  },
+  setup (props, { emit }) {
     const target = ref(null)
     const isShow = ref(false)
 
@@ -26,6 +32,10 @@ export default {
       isShow.value = true
       const data = await getCityList()
       cityList.value = data
+      // 每次打开的时候都重新收集数据
+      for (const key in address) {
+        address[key] = ''
+      }
     }
 
     const hide = () => {
@@ -53,11 +63,50 @@ export default {
     }
     const cityList = ref([])
     const currList = computed(() => {
-      const currList = cityList.value
-      return currList
+      // 省份
+      let list = cityList.value
+      // 城市
+      if (address.provinceCode) {
+        list = list.find(item => item.code === address.provinceCode).areaList
+      }
+      // 地区
+      if (address.cityCode) {
+        list = list.find(item => item.code === address.cityCode).areaList
+      }
+      return list
     })
 
-    return { isShow, toggle, target, currList }
+    const address = reactive({
+      provinceCode: '',
+      provinceName: '',
+      cityCode: '',
+      cityName: '',
+      countyCode: '',
+      countyName: '',
+      fullLocation: ''
+    })
+
+    const changeItem = (item) => {
+      // 省份：level === 0
+      if (item.level === 0) {
+        address.provinceCode = item.code
+        address.provinceName = item.name
+      }
+      // 市：level === 1
+      if (item.level === 1) {
+        address.cityCode = item.code
+        address.cityName = item.name
+      }
+      // 区/县：level === 2
+      if (item.level === 2) {
+        address.countyCode = item.code
+        address.countyName = item.name
+        hide()
+        address.fullLocation = `${address.provinceName} ${address.cityName} ${address.countyName}`
+        emit('change', address)
+      }
+    }
+    return { isShow, toggle, target, currList, changeItem }
   }
 }
 </script>
