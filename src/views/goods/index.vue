@@ -19,7 +19,7 @@
         <div class="goods-info-right">
           <GoodsName :goods="goods"/>
             <!-- 规格组件 -->
-          <GoodsSku />
+          <GoodsSku :goods="goods"/>
         </div>
       </div>
       <!-- 商品推荐 -->
