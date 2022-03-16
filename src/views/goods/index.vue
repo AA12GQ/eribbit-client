@@ -32,7 +32,7 @@
           <!-- 商品+评价 -->
           <GoodsTabs />
           <!-- 注意事项 -->
-          <div class="goods-warn"></div>
+          <GoodsWarn />
         </div>
         <!-- 24热榜+专题推荐 -->
         <div class="goods-aside">
@@ -52,12 +52,13 @@ import GoodsName from './components/goods-name'
 import GoodsSku from './components/goods-sku'
 import GoodsTabs from './components/goods-tabs.vue'
 import GoodsHot from './components/goods-hot.vue'
+import GoodsWarn from './components/goods-warn.vue'
 import { ref, watch, provide } from 'vue'
 import { findGoods } from '@/api/goods'
 import { useRoute } from 'vue-router'
 export default {
   name: 'XtxGoodsPage',
-  components: { GoodsRelevant, GoodsImage, GoodsSales, GoodsName, GoodsSku, GoodsTabs, GoodsHot },
+  components: { GoodsRelevant, GoodsImage, GoodsSales, GoodsName, GoodsSku, GoodsTabs, GoodsHot, GoodsWarn },
   setup () {
     const goods = ref(null)
     const route = useRoute()
