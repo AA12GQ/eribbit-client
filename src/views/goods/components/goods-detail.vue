@@ -2,20 +2,24 @@
   <div class="goods-detail">
     <!-- 属性 -->
     <ul class="attrs">
-      <li v-for="i in 4" :key="i">
-        <span class="dt">品牌</span>
-        <span class="dd">网易严选推荐选品，本产品为鸿星尔克品牌，由国货之光鸿星尔克生产</span>
+      <li v-for="item in goods.details.properties" :key="item.value">
+        <span class="dt">{{item.name}}</span>
+        <span class="dd">{{item.value}}</span>
       </li>
     </ul>
     <!-- 图片 -->
-    <img src="https://yanxuan-item.nosdn.127.net/8334cda78df187450368e1e8cb22e61e.jpg">
-    <img src="https://yanxuan-item.nosdn.127.net/6502b98072574531302d69423c1344ce.jpg">
+    <img v-for="item in goods.details.pictures" :key="item" v-lazy="item" >
   </div>
 </template>
 
 <script>
+import { inject } from 'vue'
 export default {
-  name: 'GoodsDetail'
+  name: 'GoodsDetail',
+  setup () {
+    const goods = inject('goods')
+    return { goods }
+  }
 }
 </script>
 

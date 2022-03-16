@@ -52,7 +52,7 @@ import GoodsName from './components/goods-name'
 import GoodsSku from './components/goods-sku'
 import GoodsTabs from './components/goods-tabs.vue'
 import GoodsHot from './components/goods-hot.vue'
-import { ref, watch } from 'vue'
+import { ref, watch, provide } from 'vue'
 import { findGoods } from '@/api/goods'
 import { useRoute } from 'vue-router'
 export default {
@@ -62,6 +62,7 @@ export default {
     const goods = ref(null)
     const route = useRoute()
     const count = ref(1)
+    provide('goods', goods)
     watch(() => route.params.id, async (id) => {
       if (route.path !== `/product/${id}`) return
       const { result } = await findGoods(id)

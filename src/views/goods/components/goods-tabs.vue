@@ -13,7 +13,7 @@
         :class="{ active: activeCom === 'GoodsComment' }"
         href="javascript:;"
       >
-        商品评价<span>(500+)</span>
+        商品评价<span> ({{goods.commentCount}}) </span>
       </a>
     </nav>
     <!-- 切换内容的地方，这个位置显示对应的组件 GoodsDetail 或者 GoodsComment -->
@@ -22,15 +22,16 @@
 </template>
 
 <script>
-import { ref } from 'vue'
+import { inject, ref } from 'vue'
 import GoodsComment from './goods-comment.vue'
 import GoodsDetail from './goods-detail.vue'
 export default {
   name: 'GoodsTabs',
   components: { GoodsDetail, GoodsComment },
   setup () {
+    const goods = inject('goods')
     const activeCom = ref('GoodsDetail')
-    return { activeCom }
+    return { goods, activeCom }
   }
 }
 </script>
