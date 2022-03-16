@@ -19,7 +19,8 @@
         <div class="goods-info-right">
           <GoodsName :goods="goods"/>
             <!-- 规格组件 -->
-          <GoodsSku :goods="goods"/>
+          <GoodsSku :goods="goods" @change="changeSku"/>
+          <XtxNumbox label="数量" v-model="count" :max="goods.inventory"/>
         </div>
       </div>
       <!-- 商品推荐 -->
@@ -54,12 +55,22 @@ export default {
   setup () {
     const goods = ref(null)
     const route = useRoute()
+    const count = ref(1)
     watch(() => route.params.id, async (id) => {
       if (route.path !== `/product/${id}`) return
       const { result } = await findGoods(id)
       goods.value = result
+      count.value = 1
     }, { immediate: true })
-    return { goods }
+    // sku改变时候触发
+    const changeSku = (sku) => {
+      if (sku.skuId) {
+        goods.value.price = sku.price
+        goods.value.oldPrice = sku.oldPrice
+        goods.value.inventory = sku.inventory
+      }
+    }
+    return { goods, changeSku, count }
   }
 }
 </script>
