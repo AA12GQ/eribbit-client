@@ -13,7 +13,7 @@
         :class="{ active: activeCom === 'GoodsComment' }"
         href="javascript:;"
       >
-        商品评价<span> ({{goods.commentCount}}) </span>
+        商品评价<span>({{goods.commentCount}})</span>
       </a>
     </nav>
     <!-- 切换内容的地方，这个位置显示对应的组件 GoodsDetail 或者 GoodsComment -->

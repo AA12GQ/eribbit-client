@@ -22,11 +22,11 @@
       </div>
     </div>
     <!-- 排序 -->
-     <div class="sort" v-if="commentInfo">
+       <div class="sort" v-if="commentInfo">
       <span>排序：</span>
-      <a href="javascript:;" class="active">默认</a>
-      <a href="javascript:;">最新</a>
-      <a href="javascript:;">最热</a>
+      <a @click="changeSort(null)" :class="{active:reqParams.sortField===null}" href="javascript:;">默认</a>
+      <a @click="changeSort('createTime')" :class="{active:reqParams.sortField==='createTime'}" href="javascript:;">最新</a>
+      <a @click="changeSort('praiseCount')" :class="{active:reqParams.sortField==='praiseCount'}" href="javascript:;">最热</a>
     </div>
      <!-- 列表 -->
     <div class="list">
@@ -89,6 +89,32 @@ export default {
       // 排序方式：praiseCount 热度  createTime 最新
       sortField: null
     })
+    const changeSort = (sortField) => {
+      reqParams.sortField = sortField
+      // 重置页码1
+      reqParams.page = 1
+    }
+    const currentTagIndex = ref(0)
+    const changeTag = (i) => {
+      currentTagIndex.value = i
+      // 点击tag的时候修改筛选条件
+      const tag = commentInfo.value.tags[i]
+      // 情况1：全部评价
+      // 情况2：有图
+      // 情况3：正常tag
+      if (tag.type === 'all') {
+        reqParams.hasPicture = null
+        reqParams.tag = null
+      } else if (tag.type === 'img') {
+        reqParams.hasPicture = true
+        reqParams.tag = null
+      } else {
+        reqParams.hasPicture = null
+        reqParams.tag = tag.title
+      }
+      // 重置页码1
+      reqParams.page = 1
+    }
 
     // 初始化需要发请求，筛选条件发生改变发请求
     const commentList = ref([])
@@ -99,7 +125,7 @@ export default {
         total.value = data.result.counts
       })
     }, { immediate: true })
-    return { commentInfo, commentList, activeTitle, formatSpecs, formatNickname }
+    return { commentInfo, commentList, activeTitle, reqParams, formatSpecs, formatNickname, changeTag, changeSort }
   }
 }
 </script>
