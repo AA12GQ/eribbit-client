@@ -28,20 +28,40 @@
       <a href="javascript:;">最新</a>
       <a href="javascript:;">最热</a>
     </div>
-    <div class="list"></div>
+     <!-- 列表 -->
+    <div class="list">
+      <div class="item" v-for="item in commentList" :key="item.id">
+        <div class="user">
+          <img :src="item.member.avatar" alt="">
+          <span> {{ formatNickname(item.member.nickname)}} </span>
+        </div>
+        <div class="body">
+          <div class="score">
+            <i v-for="i in item.score" :key="i" class="iconfont icon-wjx01"></i>
+            <i v-for="i in 5-item.score" :key="i" class="iconfont icon-wjx02"></i>
+            <span class="attr">{{formatSpecs(item.orderInfo.specs)}}</span>
+          </div>
+          <div class="text">{{item.content}}</div>
+          <div class="time">
+            <span>{{item.createTime}}</span>
+            <span class="zan"><i class="iconfont icon-dianzan"></i> {{item.praiseCount}}</span>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
-import { findGoodsCommentInfo } from '@/api/goods'
-import { inject, ref } from 'vue'
+import { findGoodsCommentInfo, findGoodsCommentList } from '@/api/goods'
+import { inject, ref, watch, reactive } from 'vue'
+
 export default {
   name: 'GoodsComment',
   setup () {
     const goods = inject('goods')
     const commentInfo = ref(null)
     findGoodsCommentInfo(goods.value.id).then(({ result }) => {
-      console.log('1111', result)
       result.tags = [
         { title: '全部评价', tagCount: result.evaluateCount },
         { title: '有图', tagCount: result.hasPictureCount },
@@ -50,7 +70,34 @@ export default {
       commentInfo.value = result
     })
     const activeTitle = ref('全部评价')
-    return { commentInfo, activeTitle }
+    // 定义转换数据的函数（对应vue2.0的过滤器）
+    const formatSpecs = (specs) => {
+      return specs.reduce((p, c) => `${p} ${c.name}：${c.nameValue}`, '').trim()
+    }
+    const formatNickname = (nickname) => {
+      return nickname.substr(0, 1) + '****' + nickname.substr(-1)
+    }
+
+    // 准备筛选条件数据
+    const reqParams = reactive({
+      page: 1,
+      pageSize: 10,
+      hasPicture: null,
+      tag: null,
+      // 排序方式：praiseCount 热度  createTime 最新
+      sortField: null
+    })
+
+    // 初始化需要发请求，筛选条件发生改变发请求
+    const commentList = ref([])
+    const total = ref(0)
+    watch(reqParams, () => {
+      findGoodsCommentList(goods.value.id, reqParams).then(data => {
+        commentList.value = data.result.items
+        total.value = data.result.counts
+      })
+    }, { immediate: true })
+    return { commentInfo, commentList, activeTitle, formatSpecs, formatNickname }
   }
 }
 </script>
@@ -135,6 +182,51 @@ export default {
         color: @xtxColor;
       }
     }
+  }
+  .list {
+  padding: 0 20px;
+  .item {
+    display: flex;
+    padding: 25px 10px;
+    border-bottom: 1px solid #f5f5f5;
+    .user {
+      width: 160px;
+      img {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        overflow: hidden;
+      }
+      span {
+        padding-left: 10px;
+        color: #666;
+      }
+    }
+    .body {
+      flex: 1;
+      .score {
+        line-height: 40px;
+        .iconfont {
+          color: #ff9240;
+          padding-right: 3px;
+        }
+        .attr {
+          padding-left: 10px;
+          color: #666;
+        }
+      }
+    }
+    .text {
+      color: #666;
+      line-height: 24px;
+    }
+    .time {
+      color: #999;
+      display: flex;
+      justify-content: space-between;
+      margin-top: 5px;
+    }
+  }
   }
 }
 </style>
