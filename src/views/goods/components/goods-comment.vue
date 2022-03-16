@@ -42,6 +42,7 @@
             <span class="attr">{{formatSpecs(item.orderInfo.specs)}}</span>
           </div>
           <div class="text">{{item.content}}</div>
+           <GoodsCommentImage v-if="item.pictures.length" :pictures="item.pictures" />
           <div class="time">
             <span>{{item.createTime}}</span>
             <span class="zan"><i class="iconfont icon-dianzan"></i> {{item.praiseCount}}</span>
@@ -55,9 +56,10 @@
 <script>
 import { findGoodsCommentInfo, findGoodsCommentList } from '@/api/goods'
 import { inject, ref, watch, reactive } from 'vue'
-
+import GoodsCommentImage from './goods-comment-image.vue'
 export default {
   name: 'GoodsComment',
+  components: { GoodsCommentImage },
   setup () {
     const goods = inject('goods')
     const commentInfo = ref(null)
