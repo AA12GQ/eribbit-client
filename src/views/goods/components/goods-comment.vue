@@ -50,6 +50,12 @@
         </div>
       </div>
     </div>
+    <!-- 分页 -->
+    <XtxPagination
+        :total="total"
+        v-model:current-page="reqParams.page"
+        @current-change="reqParams.page = $event"
+    />
   </div>
 </template>
 
