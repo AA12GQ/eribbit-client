@@ -8,6 +8,7 @@
       </nav>
       <!-- 表单 -->
       <div v-if="activeName==='account'" class="account-box">表单</div>
+      <LoginForm></LoginForm>
       <!-- 二维码 -->
       <div v-if="activeName==='qrcode'" class="qrcode-box">
         <img src="@/assets/images/qrcode.jpg" alt="">
@@ -21,12 +22,14 @@
 <script>
 import LoginHeader from './components/login-header'
 import LoginFooter from './components/login-footer'
+import LoginForm from './components/login-form.vue'
 import { ref } from 'vue'
 export default {
   name: 'Login',
   components: {
     LoginHeader,
-    LoginFooter
+    LoginFooter,
+    LoginForm
   },
   setup () {
     const activeName = ref('account')
