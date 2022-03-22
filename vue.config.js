@@ -1,7 +1,9 @@
 const path = require('path')
 module.exports = {
   devServer: {
-    open: true
+    open: true,
+    host: 'www.corho.com',
+    port: 8080
   },
 
   pluginOptions: {
@@ -19,5 +21,6 @@ module.exports = {
       .use('url-loader')
       .loader('url-loader')
       .tap(options => Object.assign(options, { limit: 10000 }))
+    config.devServer.disableHostCheck(true)
   }
 }

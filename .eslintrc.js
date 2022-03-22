@@ -1,4 +1,7 @@
 module.exports = {
+    globals: {
+        "QC": true
+      },
   root: true,
   env: {
     node: true
