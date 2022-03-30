@@ -28,28 +28,6 @@
 
 总结：完成电商支付闭环。
 
-## [#](https://megasu.gitee.io/erabbit-client-pc-document/guide/01-intro.html#_02-配套资源)02-配套资源
-
-> 目的：了解真实企业开发都会有哪些配套资源。
-
-企业开发配套：
-
-- [设计图(opens new window)](https://app.mockplus.cn/app/MLUPlO1_G/design)
-- [原型稿(opens new window)](https://app.mockplus.cn/run/prototype/QO7BCWlUKB/IWlj1dabSw/c-f4gj1smb0?ha=1&ps=1)
-- [接口文档(opens new window)](https://mock.boxuegu.com/project/1175/interface/api)
-
-我们学习配套：
-
-- [接口文档](https://megasu.gitee.io/erabbit-client-pc-document/api.html)
-- [参照案例 vue3.0(opens new window)](http://erabbit.itheima.net/#/)
-- [参照案例 vue2.0(opens new window)](http://zhoushugang.gitee.io/erabbit-client-pc/#/)
-
-总结：
-
-- 在学习开发阶段使用本地 API 文档与 vue3.0 版本样例。
-
-## [#](https://megasu.gitee.io/erabbit-client-pc-document/guide/01-intro.html#_03-使用技术)03-使用技术
-
 > 目的：概述下项目会运用到的技术点。
 
 项目基于 vue 技术来实现，会使用以下技术：
