@@ -134,4 +134,4 @@
 
 ![node-current](https://img.shields.io/node/v/next) ![npm](https://img.shields.io/npm/v/n) ![npm (tag)](https://img.shields.io/npm/v/vue/next?color=green&label=vue)
 
-> [演示地址](http://erabbit.itheima.net/#/)
+> [演示地址](http://42.192.3.136:8082/#/)
